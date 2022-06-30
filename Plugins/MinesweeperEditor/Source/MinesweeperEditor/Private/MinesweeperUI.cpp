@@ -157,7 +157,6 @@ FReply MinesweeperUI::PopulateGrid()
 {
 	if (GameData.IsDataValid() && GameData.IsNumberOfBombsValid())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Entered"));
 		Reset();
 
 		PopulateBombPositionArray();

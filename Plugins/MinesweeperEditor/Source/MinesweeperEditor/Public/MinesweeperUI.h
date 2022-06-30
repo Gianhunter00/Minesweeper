@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputModel.h"
+#include "CellStatus.h"
 #include "Widgets/Input/SSpinBox.h"
 #include "Widgets/Text/STextBlock.h"
 #include "Widgets/Layout/SGridPanel.h"
@@ -10,59 +12,6 @@
 /**
  * 
  */
-
-enum ECellState
-{
-	ECellState_NotClicked,
-	ECellState_Clicked
-};
-
-enum ECellFlag
-{
-	ECellFlag_NotFlagged,
-	ECellFlag_Flagged
-};
-
-enum ECellType
-{
-	ECellType_NotBomb,
-	ECellType_Bomb
-};
-
-struct InputData
-{
-public:
-	inline bool IsDataValid() { return Width != 0 && Height != 0 && NumberOfBombs != 0; }
-	inline bool IsNumberOfBombsValid() { return Width * Height > NumberOfBombs; }
-	inline void Reset() { Width = 0; Height = 0; NumberOfBombs = 0; }
-public:
-	int32 Width;
-	int32 Height;
-	int32 NumberOfBombs;
-};
-
-struct MinesweeperCell
-{
-public:
-	MinesweeperCell()
-	{
-		FlagState = ECellFlag::ECellFlag_NotFlagged;
-		State = ECellState::ECellState_NotClicked;
-		Type = ECellType::ECellType_NotBomb;
-		AdjacentBombsNumber = 0;
-		Checked = false;
-	}
-	MinesweeperCell(ECellType InType) : MinesweeperCell()
-	{
-		Type = InType;
-	}
-	bool Checked;
-	int32 AdjacentBombsNumber;
-	ECellFlag FlagState;
-	ECellType Type;
-	ECellState State;
-	TArray<MinesweeperCell*> AdjacentCell;
-};
 
 class MINESWEEPEREDITOR_API MinesweeperUI
 {

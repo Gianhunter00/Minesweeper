@@ -10,4 +10,6 @@ public:
 	int32 Width;
 	int32 Height;
 	int32 NumberOfBombs;
+	bool FlaggedClick;
+	bool Playing;
 };

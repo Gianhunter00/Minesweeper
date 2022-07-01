@@ -31,8 +31,8 @@ MinesweeperUI::MinesweeperUI()
 										 "You cannot show that cell unless you free it\n\n"
 										 "Reclicking the cell when the \"Apply Flag?\" checkbox is on will free the cell.\n\n"
 										 "GOOD GAME"));
-	Playing = true;
-	FlaggedClick = false;
+	GameData.Playing = true;
+	GameData.FlaggedClick = false;
 	GameData.Reset();
 }
 
@@ -198,7 +198,7 @@ FReply MinesweeperUI::PopulateGrid()
 
 void MinesweeperUI::CheckWinLose(int32 InIndex)
 {
-	if (MineCell[InIndex].FlagState == ECellFlag::ECellFlag_Flagged || FlaggedClick || !Playing)
+	if (MineCell[InIndex].FlagState == ECellFlag::ECellFlag_Flagged || GameData.FlaggedClick || !GameData.Playing)
 	{
 		return;
 	}
@@ -206,7 +206,7 @@ void MinesweeperUI::CheckWinLose(int32 InIndex)
 	if (MineCell[InIndex].Type == ECellType::ECellType_Bomb)
 	{
 		FMessageDialog::Open(EAppMsgType::Ok, Lose, &LoseTitle);
-		Playing = false;
+		GameData.Playing = false;
 		ShowAll();
 	}
 	else
@@ -249,7 +249,7 @@ void MinesweeperUI::CheckWin()
 	if (CountClicked == (GameData.Height * GameData.Width) - GameData.NumberOfBombs)
 	{
 		FMessageDialog::Open(EAppMsgType::Ok, Win, &WinTitle);
-		Playing = false;
+		GameData.Playing = false;
 	}
 }
 
@@ -265,7 +265,7 @@ FText MinesweeperUI::SetButtonText(int32 InIndex) const
 
 void MinesweeperUI::CheckUncheckFlaggedClick(ECheckBoxState InState)
 {
-	FlaggedClick = InState == ECheckBoxState::Checked;
+	GameData.FlaggedClick = InState == ECheckBoxState::Checked;
 }
 
 void MinesweeperUI::SetAdjacentBombForAllCell()
@@ -333,13 +333,15 @@ void MinesweeperUI::CheckAndAddAdjacent(MinesweeperCell* CellToAddAdjacent, int3
 
 void MinesweeperUI::PressedButton(int32 InIndex)
 {
-	if ((MineCell[InIndex].FlagState == ECellFlag::ECellFlag_Flagged && !FlaggedClick)|| MineCell[InIndex].State == ECellState::ECellState_Clicked || !Playing)
+	if ((MineCell[InIndex].FlagState == ECellFlag::ECellFlag_Flagged && !GameData.FlaggedClick) || 
+		MineCell[InIndex].State == ECellState::ECellState_Clicked || 
+		!GameData.Playing)
 	{
 		return;
 	}
 
 
-	if (FlaggedClick)
+	if (GameData.FlaggedClick)
 	{
 		if (MineCell[InIndex].FlagState == ECellFlag::ECellFlag_NotFlagged)
 		{
@@ -410,14 +412,14 @@ void MinesweeperUI::Reset()
 	MineCell.Empty();
 	BombPosition.Empty();
 	ButtonCell.Empty();
-	Playing = true;
+	GameData.Playing = true;
 }
 
 void MinesweeperUI::OnDockTabClosing(TSharedRef<SDockTab> InTab)
 {
 	Reset();
 	GameData.Reset();
-	FlaggedClick = false;
+	GameData.FlaggedClick = false;
 }
 
 

@@ -50,8 +50,6 @@ private:
 
 	void OnDockTabClosing(TSharedRef<SDockTab> InTab);
 private:
-	bool FlaggedClick;
-	bool Playing;
 	TSharedPtr<SGridPanel> GridPanel;
 	TArray<TSharedPtr<SButton>> ButtonCell;
 	InputData GameData;
